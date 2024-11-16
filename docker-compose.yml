@@ -1,0 +1,13 @@
+version: "3"
+services:
+  db:
+    image: postgres:latest
+    container_name: music-catalog-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=supersecret1111
+      - POSTGRES_DB=music-catalog
+      - POSTGRES_USER=postgres
+    volumes:
+      - /Users/husnulnawafil/www/learn/go-music-catalog/db:/var/lib/postgresql/data
