@@ -7,6 +7,7 @@ import (
 	membershipsmodel "github.com/nawafilhusnul/music-catalog/internal/models/memberships"
 )
 
+//go:generate mockgen -source=service.go -destination=service_mock.go -package=memberships
 type repository interface {
 	CreateUser(ctx context.Context, model *membershipsmodel.User) error
 	GetUser(ctx context.Context, email, username string, id uint) (*membershipsmodel.User, error)

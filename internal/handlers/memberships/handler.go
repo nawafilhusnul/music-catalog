@@ -7,6 +7,7 @@ import (
 	membershipsmodel "github.com/nawafilhusnul/music-catalog/internal/models/memberships"
 )
 
+//go:generate mockgen -source=handler.go -destination=handler_mock.go -package=memberships
 type service interface {
 	SignUp(ctx context.Context, req *membershipsmodel.SignUpRequest) error
 }
