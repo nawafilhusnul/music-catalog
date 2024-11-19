@@ -4,13 +4,13 @@ import (
 	"context"
 	"errors"
 
-	membershipmodel "github.com/nawafilhusnul/music-catalog/internal/models/memberships"
+	membershipsmodel "github.com/nawafilhusnul/music-catalog/internal/models/memberships"
 	"github.com/rs/zerolog/log"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
-func (s *service) SignUp(ctx context.Context, req *membershipmodel.SignUpRequest) error {
+func (s *service) SignUp(ctx context.Context, req *membershipsmodel.SignUpRequest) error {
 	existingUser, err := s.repo.GetUser(ctx, req.Email, req.Username, 0)
 	if err != nil && err != gorm.ErrRecordNotFound {
 		log.Error().Err(err).Msg("failed to get user")
@@ -27,7 +27,7 @@ func (s *service) SignUp(ctx context.Context, req *membershipmodel.SignUpRequest
 		return err
 	}
 
-	user := &membershipmodel.User{
+	user := &membershipsmodel.User{
 		Email:    req.Email,
 		Username: req.Username,
 		Password: string(pass),

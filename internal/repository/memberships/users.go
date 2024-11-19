@@ -3,15 +3,15 @@ package memberships
 import (
 	"context"
 
-	membershipmodel "github.com/nawafilhusnul/music-catalog/internal/models/memberships"
+	membershipsmodel "github.com/nawafilhusnul/music-catalog/internal/models/memberships"
 )
 
-func (r *repository) CreateUser(ctx context.Context, model *membershipmodel.User) error {
+func (r *repository) CreateUser(ctx context.Context, model *membershipsmodel.User) error {
 	return r.db.WithContext(ctx).Create(model).Error
 }
 
-func (r *repository) GetUser(ctx context.Context, email, username string, id uint) (*membershipmodel.User, error) {
-	var user membershipmodel.User
+func (r *repository) GetUser(ctx context.Context, email, username string, id uint) (*membershipsmodel.User, error) {
+	var user membershipsmodel.User
 
 	err := r.db.WithContext(ctx).
 		Where("email = ?", email).

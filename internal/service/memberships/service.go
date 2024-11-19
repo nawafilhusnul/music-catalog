@@ -4,12 +4,12 @@ import (
 	"context"
 
 	"github.com/nawafilhusnul/music-catalog/internal/configs"
-	membershipmodel "github.com/nawafilhusnul/music-catalog/internal/models/memberships"
+	membershipsmodel "github.com/nawafilhusnul/music-catalog/internal/models/memberships"
 )
 
 type repository interface {
-	CreateUser(ctx context.Context, model *membershipmodel.User) error
-	GetUser(ctx context.Context, email, username string, id uint) (*membershipmodel.User, error)
+	CreateUser(ctx context.Context, model *membershipsmodel.User) error
+	GetUser(ctx context.Context, email, username string, id uint) (*membershipsmodel.User, error)
 }
 
 type service struct {

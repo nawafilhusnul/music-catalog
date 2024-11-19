@@ -4,11 +4,11 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	membershipmodel "github.com/nawafilhusnul/music-catalog/internal/models/memberships"
+	membershipsmodel "github.com/nawafilhusnul/music-catalog/internal/models/memberships"
 )
 
 func (h *handler) SignUp(c *gin.Context) {
-	var req membershipmodel.SignUpRequest
+	var req membershipsmodel.SignUpRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
