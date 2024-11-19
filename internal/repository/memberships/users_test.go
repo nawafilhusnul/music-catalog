@@ -4,6 +4,7 @@ import (
 	"context"
 	"reflect"
 	"testing"
+	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	membershipsmodel "github.com/nawafilhusnul/music-catalog/internal/models/memberships"
@@ -19,7 +20,7 @@ func Test_repository_CreateUser(t *testing.T) {
 
 	gormDB, err := gorm.Open(postgres.New(postgres.Config{
 		Conn: db,
-	}), &gorm.Config{ConnPool: db})
+	}), &gorm.Config{})
 
 	assert.NoError(t, err)
 
@@ -118,8 +119,10 @@ func Test_repository_GetUser(t *testing.T) {
 
 	gormDB, err := gorm.Open(postgres.New(postgres.Config{
 		Conn: db,
-	}), &gorm.Config{ConnPool: db})
+	}), &gorm.Config{})
 	assert.NoError(t, err)
+
+	now := time.Now()
 
 	type args struct {
 		ctx      context.Context
@@ -142,8 +145,41 @@ func Test_repository_GetUser(t *testing.T) {
 				username: "testuser",
 			},
 			want: &membershipsmodel.User{
+				Model: gorm.Model{
+					ID:        1,
+					CreatedAt: now,
+					UpdatedAt: now,
+				},
 				Email:    "test@example.com",
 				Username: "testuser",
+				Password: "testpassword",
+			},
+			wantErr: false,
+			mockFn: func(args args) {
+
+				mock.ExpectQuery(`SELECT \* FROM "users" .+`).
+					WithArgs(args.email, args.username, args.id, 1).
+					WillReturnRows(
+						sqlmock.NewRows([]string{"id", "created_at", "updated_at", "email", "username", "password"}).
+							AddRow(1, now, now, "test@example.com", "testuser", "testpassword"),
+					)
+
+			},
+		},
+		{
+			name: "error",
+			args: args{
+				ctx:      context.Background(),
+				email:    "test@example.com",
+				username: "testuser",
+			},
+			want:    nil,
+			wantErr: true,
+			mockFn: func(args args) {
+
+				mock.ExpectQuery(`SELECT \* FROM "users" .+`).
+					WithArgs(args.email, args.username, args.id, 1).
+					WillReturnError(assert.AnError)
 			},
 		},
 	}
