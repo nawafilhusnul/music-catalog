@@ -11,11 +11,11 @@ type User struct {
 	Password  string `gorm:"column:password;not null"`
 	UpdatedBy uint   `gorm:"column:updated_by;not null"`
 	CreatedBy uint   `gorm:"column:created_by;not null"`
-	DeletedBy uint   `gorm:"column:deleted_by"`
+	DeletedBy uint   `gorm:"column:deleted_by;default:null"`
 }
 
 type SignUpRequest struct {
-	Email    string `json:"email"`
-	Username string `json:"username"`
-	Password string `json:"password"`
+	Email    string `json:"email" binding:"required,email"`
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
 }
