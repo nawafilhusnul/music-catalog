@@ -58,7 +58,6 @@ func Test_repository_CreateUser(t *testing.T) {
 						args.model.Password,
 						args.model.UpdatedBy,
 						args.model.CreatedBy,
-						args.model.DeletedBy,
 					).
 					WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(1))
 
@@ -89,7 +88,6 @@ func Test_repository_CreateUser(t *testing.T) {
 						args.model.Password,
 						args.model.UpdatedBy,
 						args.model.CreatedBy,
-						args.model.DeletedBy,
 					).
 					WillReturnError(assert.AnError)
 
