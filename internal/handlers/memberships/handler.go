@@ -10,6 +10,7 @@ import (
 //go:generate mockgen -source=handler.go -destination=handler_mock.go -package=memberships
 type service interface {
 	SignUp(ctx context.Context, req *membershipsmodel.SignUpRequest) error
+	SignIn(ctx context.Context, req *membershipsmodel.SignInRequest) (*membershipsmodel.SignInResponse, error)
 }
 
 type handler struct {
@@ -25,5 +26,5 @@ func (h *handler) RegisterRoutes() {
 	membershipRouter := h.Group("/memberships")
 
 	membershipRouter.POST("/signup", h.SignUp)
-
+	membershipRouter.POST("/signin", h.SignIn)
 }
