@@ -2,13 +2,18 @@ package main
 
 import (
 	"log"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/nawafilhusnul/music-catalog/internal/configs"
 	membershipshandler "github.com/nawafilhusnul/music-catalog/internal/handlers/memberships"
+	trackshandler "github.com/nawafilhusnul/music-catalog/internal/handlers/tracks"
 	"github.com/nawafilhusnul/music-catalog/internal/models/memberships"
 	membershipsrepository "github.com/nawafilhusnul/music-catalog/internal/repository/memberships"
+	spotifyoutbound "github.com/nawafilhusnul/music-catalog/internal/repository/spotify"
 	membershipservice "github.com/nawafilhusnul/music-catalog/internal/service/memberships"
+	tracksservice "github.com/nawafilhusnul/music-catalog/internal/service/tracks"
+	"github.com/nawafilhusnul/music-catalog/pkg/httpclient"
 	"github.com/nawafilhusnul/music-catalog/pkg/internalsql"
 )
 
@@ -44,6 +49,12 @@ func main() {
 	membershipsSvc := membershipservice.NewService(cfg, membershipsRepo)
 	membershipsHandler := membershipshandler.NewHandler(membershipsSvc, r)
 	membershipsHandler.RegisterRoutes()
+
+	httpClient := httpclient.NewClient(&http.Client{})
+	spotifyOutbound := spotifyoutbound.NewSpotifyOutbound(cfg, httpClient)
+	tracksSvc := tracksservice.NewService(spotifyOutbound)
+	tracksHandler := trackshandler.NewHandler(tracksSvc, r)
+	tracksHandler.RegisterRoutes()
 
 	r.Run(cfg.Service.Port)
 }
