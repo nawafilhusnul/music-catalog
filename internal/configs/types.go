@@ -4,6 +4,7 @@ type (
 	Config struct {
 		Service  Service  `mapstructure:"service"`
 		Database Database `mapstructure:"database"`
+		Spotify  Spotify  `mapstructure:"spotify"`
 	}
 
 	Service struct {
@@ -13,5 +14,10 @@ type (
 
 	Database struct {
 		DataSourceName string `mapstructure:"dataSourceName"`
+	}
+
+	Spotify struct {
+		ClientID     string `mapstructure:"clientID"`
+		ClientSecret string `mapstructure:"clientSecret"`
 	}
 )
